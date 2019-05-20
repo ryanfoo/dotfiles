@@ -1,8 +1,8 @@
 " @Author: Ryan Foo <rfoo@outlook.com>
 " @Date: 2019-03-20 08:03:33
 " @Last Modified by: Ryan Foo <rfoo@outlook.com>
-" @Last Modified time: 2019-03-20 08:03:39
-
+" @Last Modified time: 2019-05-19 21:36:23
+"
 " Vundle Plugin
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -48,6 +48,12 @@ Plugin 'skywind3000/asyncrun.vim'
 Plugin 'rstacruz/sparkup'
 " CSS Color preview
 Plugin 'ap/vim-css-color'
+" CTRLP
+Plugin 'kien/ctrlp.vim'
+" Gitgutter
+Plugin 'airblade/vim-gitgutter'
+" Tagbar
+Plugin 'majutsushi/tagbar'
 call vundle#end()
 filetype plugin indent on
 " To ignore plugin indent changes, instead use:
@@ -124,7 +130,9 @@ set incsearch     " show search matches as you type
 set expandtab
 set shiftwidth=4
 set softtabstop=4
- 
+
+set tags=tags     " tags
+
 " Always set the current file directory as the local current directory
 autocmd BufEnter * silent! lcd %:p:h
  
@@ -152,53 +160,14 @@ set undodir=$HOME/.vim/undo " where to save undo histories
 set undolevels=1000         " How many undos
 set undoreload=10000        " number of lines to save for undo
 
-" NERDTree
-" Open automatically when vim is opened
-autocmd vimenter * NERDTree
+map <F6> :GitGutterToggle<CR>
+map <F7> :NERDTreeToggle<CR>
+map <F8> :TagbarToggle<CR>
 
-" C++ 11/14 Highlighting
-" Class scope highlighting
-let g:cpp_class_scope_highlight = 1
-" Member variables highlighting
-let g:cpp_member_variable_highlight = 1
-" Class name highlighting
-let g:cpp_class_decl_highlight = 1
-" Library concept highlight
-let g:cpp_concepts_highlight = 1
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
 
-" File header
-let g:fileheader_auto_add = 1
-
-" Nerd Commenter
-
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" Javascript
-let g:javascript_plugin_jsdoc = 1
-let g:javascript_plugin_ngdoc = 1
-
-" Emmet for easier JSX; expand css selectors into HTML (or JSX) on the fly
-" goto-> https://drivy.engineering/setting-up-vim-for-react/
-let g:user_emmet_leader_key='<Tab>'
-let g:user_emmet_settings = {
-  \  'javascript.jsx' : {
-    \      'extends' : 'jsx',
-    \  },
-  \}
-
-" ESLint
-let g:ale_sign_error = '●' " Less aggressive than the default '>>'
-let g:ale_sign_warning = '.'
-let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
-
-" For Automatic JSX reformatting
-autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
-
+" System clipboard
+set clipboard=unnamed
+map <C-x> :!pbcpy<CR>
+map <C-c> :w !pbcopy<CR><CR> 
